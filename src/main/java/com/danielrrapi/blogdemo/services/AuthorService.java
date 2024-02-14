@@ -1,10 +1,12 @@
 package com.danielrrapi.blogdemo.services;
 
 import com.danielrrapi.blogdemo.entities.Author;
+import com.danielrrapi.blogdemo.exceptions.NotFoundException;
 import org.apache.catalina.User;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
@@ -15,7 +17,7 @@ public class AuthorService {
     public List<Author> getAuthors() {
         return authors;
     }
-    public Author saveUser(Author newUser) {
+    public Author saveAuthor(Author newUser) {
         Random random = new Random();
         newUser.setId(random.nextInt(1, 1000000));
         this.authors.add(newUser);
@@ -29,8 +31,16 @@ public class AuthorService {
             }
         }
         if (found == null) {
-            System.out.println("AUTHOR NOT FOUND");
+            throw  new NotFoundException(id);
         } else  return found;
     }
-    public Author findByIdAndUpdate(int id, User updateUser) {}
+    public void findByIdAndUpdate(int id, User updateUser) {
+        Iterator<Author> iterator = this.authors.iterator();
+        while (iterator.hasNext()) {
+            Author current = iterator.next();
+            if (current.getId() == id) {
+                iterator.remove();
+            }
+        }
+    }
 }
