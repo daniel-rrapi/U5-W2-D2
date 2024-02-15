@@ -34,7 +34,19 @@ public class AuthorService {
             throw  new NotFoundException(id);
         } else  return found;
     }
-    public void findByIdAndUpdate(int id, User updateUser) {
+    public void findByIdAndUpdate(int id, Author updateUser) {
+        Iterator<Author> iterator = this.authors.iterator();
+        while (iterator.hasNext()) {
+            Author current = iterator.next();
+            if (current.getId() == id) {
+                current.setNome(updateUser.getNome());
+                current.setCognome(updateUser.getCognome());
+                current.setEmail(updateUser.getEmail());
+                current.setDataDiNascita(updateUser.getDataDiNascita());
+            }
+        }
+    }
+    public void findByIdAndDelete(int id) {
         Iterator<Author> iterator = this.authors.iterator();
         while (iterator.hasNext()) {
             Author current = iterator.next();
